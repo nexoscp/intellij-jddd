@@ -3,7 +3,9 @@ package nexos.intellij.ddd
 import com.intellij.codeInsight.daemon.quickFix.ExternalLibraryResolver
 import com.intellij.openapi.module.Module
 import com.intellij.util.ThreeState
-import com.intellij.util.ThreeState.NO
+import org.xmolecules.ide.intellij.All
+import org.xmolecules.ide.intellij.ConceptImplementation
+import java.util.*
 
 /**
  * Text autocompletion on annotation names.
@@ -14,16 +16,12 @@ import com.intellij.util.ThreeState.NO
  */
 class DDDLibraryResolver : ExternalLibraryResolver() {
     companion object {
-        //FIXME create fqName.typename => Info
-        val names by lazy { all.associateBy { it.concept.name.toLowerCase() } }
+        val names by lazy { All.ALL.associateBy { it.concept.name.toLowerCase() } }
     }
 
     override fun resolveClass(shortClassName: String, isAnnotation: ThreeState, contextModule: Module): ExternalClassResolveResult? {
-        if (isAnnotation != NO) {
-            return names[shortClassName.toLowerCase()]?.let { result(it) }
-        }
-        return null
+        return names[shortClassName.lowercase(Locale.getDefault())]?.let { result(it) } //TODO find Locale
     }
 
-    private fun result(info: Info) = ExternalClassResolveResult(info.fqName, info.library.externalLibrary)
+    private fun result(info: ConceptImplementation) = ExternalClassResolveResult(info.fqName, info.library.externalLibrary)
 }

@@ -13,7 +13,7 @@ import com.intellij.ui.ColoredTreeCellRenderer;
 class JMoleculesDecorator implements ProjectViewNodeDecorator {
 
 	@Override
-	public void decorate(ProjectViewNode<?> node, PresentationData data) {
+	public void decorate(final ProjectViewNode<?> node, final PresentationData data) {
 
 		if (data == null || node == null) {
 			return;
